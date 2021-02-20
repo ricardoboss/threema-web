@@ -1,24 +1,26 @@
-# Vim
-*.swp
-
-# Jetbrains
-.idea/
-
-# Generated files
-/js/
-dist/generated/
-dist/*.tar.gz
-public/css/*.css
-public/css/*.map
-release/
-
-# Node stuff
-node_modules/
-
-# Other
-.ackrc
-.rgignore
-
-#debug stuff
-npm-debug.log
 .DS_Store
+node_modules
+/dist
+
+/tests/e2e/videos/
+/tests/e2e/screenshots/
+
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

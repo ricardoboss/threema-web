@@ -1,205 +1,29 @@
-# Threema Web
-
-[![Build status](https://circleci.com/gh/threema-ch/threema-web.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/threema-ch/threema-web)
-[![License](https://img.shields.io/badge/License-AGPLv3-blue.svg)](https://github.com/threema-ch/threema-web/blob/master/LICENSE.txt)
-[![Docker Image](https://img.shields.io/badge/docker%20image-threema%2Fthreema--web-yellow.svg)](https://hub.docker.com/r/threema/threema-web)
-
-> :warning: **Note:** Threema Web is in maintenance mode while we are working on a new
-> solution that should resolve some of the long-standing issues we were having
-> with Threema Web. We will still do regular maintenance and fix critical bugs,
-> but for now there will be no major new features or non-critical bugfixes.
-> See https://github.com/threema-ch/threema-web/pull/996 for more details.
-
-Threema Web is a web client for Threema, a privacy-focussed end-to-end
-encrypted mobile messenger hosted and developed in Switzerland. With Threema
-Web, you can use Threema on your Desktop without compromising security.
-
-[https://web.threema.ch/](https://web.threema.ch/)
-
-![Screenshot](https://threema.ch/images/webclient_header.png)
-
-Threema Web establishes a connection between Desktop and mobile device using
-[WebRTC](https://webrtc.org/) (Android) or encrypted WebSockets (iOS).
-Signaling and data is end-to-end encrypted with [SaltyRTC](https://saltyrtc.org/).
-
-For more information, see the [Threema Cryptography
-Whitepaper](https://threema.ch/press-files/2_documentation/cryptography_whitepaper.pdf).
-
-
-## Bug Reports and Feature Requests
-
-If you find a bug in Threema Web, feel free to [open an
-issue](https://github.com/threema-ch/threema-web/issues/new) on GitHub. Please
-make sure that your bug report hasn't already been filed by using the search
-function.
-
-Note that Threema Web is in maintenance mode while we are working on a new
-solution that should resolve some of the long-standing issues we were having
-with Threema Web. We will still do regular maintenance and fix critical bugs,
-but for now there will be no major new features or non-critical bugfixes.  See
-https://github.com/threema-ch/threema-web/pull/996 for details.
-
-
-## Beta Testing
-
-We may occasionally deploy experimental branches on
-[https://web-beta.threema.ch](https://web-beta.threema.ch) which you are
-encouraged to test. If you encounter problems, please
-[open an issue](https://github.com/threema-ch/threema-web/issues/new) and
-include the experiment's version number (e.g. `1.2.3-experiment-beta4`).
-
-
-## Translating
-
-If you want to help translate Threema Web to your language, please check out
-[`TRANSLATING.md`](./TRANSLATING.md)!
-
-
-## Protocol
-
-The protocol used to communicate between the Threema app and Threema Web
-is documented [here](https://threema-ch.github.io/app-remote-protocol/).
-
-
-## Development
-
-Threema Web is written using [TypeScript](https://www.typescriptlang.org/) and
-[AngularJS 1](https://www.angularjs.org/). Dependencies are managed with
-[npm](https://www.npmjs.com/). You currently need Node.js 12 to build Threema
-Web. (Note that Node.js is only a build dependency, the result is plain old
-client-side JavaScript.)
-
-Install development dependencies:
-
-    npm install
-
-Run the dev server:
-
-    npm run devserver
-
-Then open the URL in your browser:
-
-    firefox http://localhost:9966
-
-*(Note that this setup should not be used in production. To run Threema
-Web on a server, please follow the instructions at
-[docs/self_hosting.md](docs/self_hosting.md).)*
-
-
-## Testing
-
-To run unit tests:
-
-    npm run build:unittests && npm run testserver
-    firefox http://localhost:7777/tests/testsuite.html
-
-To run UI tests:
-
-    npm run build  # Required for CSS to be rebuilt
-    npm run test:ui <browser>
-
-For example:
-
-    npm run test:ui firefox
-    npm run test:ui chrome
-
-You can also filter the test cases:
-
-    npm run test:ui firefox emoji
-
-To run linting checks:
-
-    npm run lint
-
-You can also install a pre-push hook to do the linting:
-
-    echo -e '#!/bin/sh\nnpm run lint' > .git/hooks/pre-push
-    chmod +x .git/hooks/pre-push
-
-
-## Configuration
-
-The configuration of Threema Web can be tweaked in `src/config.ts`:
-
-**General**
-
-- `SELF_HOSTED`: Set this to `true` if this instance of Threema Web isn't being
-  hosted on `web.threema.ch`.
-- `PREV_PROTOCOL_LAST_VERSION`: When the Threema Web protocol version changes,
-  this can be set to the last version of Threema Web that supported  the
-  previous protocol version. If set to something different than `null`, a
-  message will be shown to the user if reconnecting fails.
-
-**SaltyRTC**
-
-- `SALTYRTC_HOST`: Set this to the hostname of the SaltyRTC server that you
-  want to use. If supplied, the substring `{prefix}` will be replaced by the
-  first byte of the initiator's public key, represented as a lowercase
-  hexadecimal value.
-- `SALTYRTC_PORT`: The port of the SaltyRTC server to be used.
-- `SALTYRTC_SERVER_KEY`: The public permanent key of the SaltyRTC server. Set
-  this value to `null` if your server does not provide a public permanent key,
-  or if you don't want to verify it.
-
-**ICE**
-
-- `ICE_SERVERS`: Configuration object for the WebRTC STUN and ICE servers.
-  Each URL may contain the substring `{prefix}`, which will be replaced by a
-  random byte represented as a lowercase hexadecimal value.
-
-**Push**
-
-- `PUSH_URL`: The server URL used to deliver push notifications to the app.
-
-
-## Self Hosting
-
-For instructions on how to host your own version of Threema Web, please refer
-to [docs/self_hosting.md](docs/self_hosting.md).
-
-
-## Contributing
-
-Contributions to Threema Web are welcome! Please open a pull request with your
-proposed changes.
-
-
-## Security
-
-Every Threema Web release will be tagged. The git tags are cryptographically
-signed using the following PGP key:
-
-    pub   rsa4096 2016-09-06 [SC] [expires: 2026-09-04]
-          E7AD D991 4E26 0E8B 35DF  B506 65FD E935 573A CDA6
-    uid           Threema Signing Key <dev@threema.ch>
-
-The public key can be found [on Keybase](https://keybase.io/threema).
-
-If you discover a security issue in the Threema Web, please follow responsible
-disclosure and report it directly to Threema instead of opening an issue on
-Github. You can find the security e-mail as well as the PGP public key at
-https://threema.ch/en/contact.
-
-
-## License
-
-Threema Web license:
-
-    Threema Web.
-
-    Copyright © 2016-2021 Threema GmbH (https://threema.ch/).
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program. If not, see <http://www.gnu.org/licenses/>.
-
-For third party library licenses, see `LICENSE-3RD-PARTY.txt`.
+# threema-web
+
+## Project setup
+```
+yarn install
+```
+
+### Compiles and hot-reloads for development
+```
+yarn serve
+```
+
+### Compiles and minifies for production
+```
+yarn build
+```
+
+### Run your end-to-end tests
+```
+yarn test:e2e
+```
+
+### Lints and fixes files
+```
+yarn lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
